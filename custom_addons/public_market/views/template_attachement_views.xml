@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- tree View -->
+
+        <record id="public_market_template_attachment_tree" model="ir.ui.view">
+            <field name="name">attachement.template.tree</field>
+            <field name="model">public.market.attachement.template</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="create_date" class="wid" string="Date et Heure de Création"  optional="show"/>
+                    <field name="code" optional="show"/>
+                    <field name="name" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="public_market_template_sous_attachment_tree" model="ir.ui.view">
+            <field name="name">attachement.sous.template.tree</field>
+            <field name="model">public.market.attachement.sous.template</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="create_date" class="wid" string="Date et Heure de Création"  optional="show"/>
+                    <field name="code" optional="show"/>
+                    <field name="line_id" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="public_market_template_attachment_form" model="ir.ui.view">
+            <field name="name">public.market.form</field>
+            <field name="model">public.market.attachement.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="price_number"/>
+                                    <field name="price_code"/>
+                                    <field name="name"/>
+                                    <field name="uom"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="public_market_template_sous_attachment_form" model="ir.ui.view">
+            <field name="name">public.market.att.sou.form</field>
+            <field name="model">public.market.attachement.sous.template</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="code"
+                                        options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
+                                <field name="line_id"
+                                       options="{'no_create': True, 'no_edit': True, 'no_open': True}" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="price_number"/>
+                                    <field name="price_code"/>
+                                    <field name="name"/>
+                                    <field name="uom"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="public_market_template_attachment_line_form" model="ir.ui.view">
+            <field name="name">public.market.att.sou.form</field>
+            <field name="model">public.market.attachement.template.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="price_number" />
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="price_code" />
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group col="6" colspan="2">
+                                <field name="quantity"/>
+
+                                <field name="uom"/>
+
+                                <field name="price_unit"/>
+                            </group>
+                        </group>
+                        <group string="Les Sous Lignes">
+                            <field name="line_ids" nolabel="1">
+                                <tree  editable="bottom">
+                                    <field name="price_number"/>
+                                    <field name="price_code"/>
+                                    <field name="name"/>
+                                    <field name="uom"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- action -->
+        <record id="action1_public_market_template_attachment" model="ir.actions.act_window">
+            <field name="name">Sous Template d'attachment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">public.market.attachement.sous.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_neutral_face">Créez votre Premier Sous Template d'attachment</p>
+            </field>
+        </record>
+
+        <record id="action2_public_market_template_attachment" model="ir.actions.act_window">
+            <field name="name">Template d'attachment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">public.market.attachement.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_neutral_face">Créez votre premier Template d'attachment</p>
+            </field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="public_market_template_attachment" name="Liste des Numéro de Prix"
+                  parent="public_market_root"
+                  sequence="2"/>
+
+        <menuitem id="public_market_attachment_sai" name="Saisir la Template" parent="public_market_template_attachment"
+                  action="action2_public_market_template_attachment" sequence="1"/>
+        <menuitem id="public_market_attachment_sas" name="Saisir la Sous Template" parent="public_market_template_attachment"
+                  action="action1_public_market_template_attachment" sequence="2"/>
+
+
+    </data>
+</odoo>

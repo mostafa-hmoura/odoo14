@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_market,access.market,model_market,,1,1,1,1
+access_public_market_stop,access.public.market.stop,model_public_market_stop,,1,1,1,1
+access_public_market_avenant,access.public.market.avenant,model_public_market_avenant,,1,1,1,1
+access_public_market_attachement_template,access.public.market.attachement.template,model_public_market_attachement_template,,1,1,1,1
+access_public_market_attachement_template_line,access.public.market.attachement.template.line,model_public_market_attachement_template_line,,1,1,1,1
+access_public_market_sous_attachement_template,access.public.market.attachement.sous.template,model_public_market_attachement_sous_template,,1,1,1,1
+access_public_market_attachement_sous_template_line,access.public.market.attachement.sous.template.line,model_public_market_attachement_sous_template_line,,1,1,1,1
+access_public_market_attachement,access.public.market.attachement,model_public_market_attachement,,1,1,1,1
+access_public_market_attachement_line,access.public.market.attachement.line,model_public_market_attachement_line,,1,1,1,1
+access_public_market_situation,access.public.market.situation,model_public_market_situation,,1,1,1,1
+access_public_market_attachement_footer,access.public.market.attachement.footer,model_public_market_attachement_footer,,1,1,1,1

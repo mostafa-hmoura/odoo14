@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+        <!-- tree View -->
+
+        <record id="public_market_list" model="ir.ui.view">
+            <field name="name">public.market.attachment.list</field>
+            <field name="model">public.market.attachement</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="public_market_id" optional="show"/>
+                    <field name="objet" optional="show"/>
+                    <field name="template_attachement_id" optional="show"/>
+                    <field name="number" optional="show"/>
+                    <field name="date" optional="show"/>
+                    <field name="mois" optional="show"/>
+                    <field name="name" optional="show"/>
+                    <field name="start" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Form View -->
+
+        <record id="public_market_attachment_form" model="ir.ui.view">
+            <field name="name">public.market.attachment.form</field>
+            <field name="model">public.market.attachement</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                    </header>
+                        <group>
+                            <field name="public_market_id"/>
+                        </group>
+                        <group>
+                            <field name="number"/>
+                        </group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="objet"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                                <field name="mois"/>
+                            </group>
+                            <group>
+                                <field name="start"/>
+                                <field name="template_attachement_id" attrs="{'invisible':[('start','=',False)],'required':[('start','!=',False)]}"/>
+                                <!--<field name="attachement_id" attrs="{'invisible':[('start','!=',False)]}"/>-->
+                            </group>
+                        </group>
+                        <group>
+                            <field name="line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="price_number" optional="show"/>
+                                    <field name="name" optional="show"/>
+                                    <field name="uom" optional="show"/>
+                                    <field name="quantity" optional="show"/>
+                                    <field name="quantity_posee_prec" optional="show"/>
+                                    <field name="quantity_posee" optional="show"/>
+                                    <field name="quantity_posee_cum" optional="show"/>
+                                    <field name="price_unit" optional="show"/>
+                                    <field name="depense_cps" optional="show" class="wid"/>
+                                    <field name="depense_prec" optional="show" class="wid"/>
+                                    <field name="depense" optional="show" class="wid"/>
+                                    <field name="depense_cum" optional="show" class="wid"/>
+                                    <field name="quantity_posee_cum_percent" optional="show" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="total_depense_cps" class="wid"/>
+                                <field name="total_depense_prec" class="wid"/>
+                            </group>
+                            <group>
+                                <field name="total_depense" class="wid"/>
+                                <field name="total_depense_cum" class="wid"/>
+                            </group>
+                        </group>
+                        <group string="Résumé des dépenses">
+                            <field name="footer_line_ids" nolabel="1">
+                                <tree editable="bottom" create="false" delete="false" edit="false">
+                                    <field name="label_id" optional="show"/>
+                                    <field name="depense_cps" optional="show"/>
+                                    <field name="depense_prec" optional="show"/>
+                                    <field name="depense" optional="show"/>
+                                    <field name="depense_cum" optional="show"/>
+                                    <field name="code" invisible="1" optional="show"/>
+                                </tree>
+                            </field>
+                        </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- action -->
+
+        <record id="action_public_market_attachment" model="ir.actions.act_window">
+            <field name="name">Attachment MO</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">public.market.attachement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('real','=',False)]</field>
+            <field name="context">{'default_real':0,'search_default_group_by_public_market_id':1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_neutral_face">Créez votre premier Attachment</p>
+            </field>
+        </record>
+        <record id="action2_public_market_attachment" model="ir.actions.act_window">
+            <field name="name">Attachement réel</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">public.market.attachement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('real','!=',False)]</field>
+            <field name="context">{'default_real':1,'search_default_group_by_public_market_id':1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_neutral_face">Créez votre premier Attachment</p>
+            </field>
+        </record>
+
+        <!-- Menu -->
+
+        <menuitem id="public_market_attachment" name="Attachement" parent="public_market_root"
+                   sequence="3"/>
+        <menuitem id="public_market_attachment_re" name="Attachement réel" parent="public_market_attachment"
+                  action="action2_public_market_attachment" sequence="2"/>
+        <menuitem id="public_market_attachment_mo" name="Attachement MO" parent="public_market_attachment"
+                  action="action_public_market_attachment" sequence="1"/>
+
+
+</odoo>

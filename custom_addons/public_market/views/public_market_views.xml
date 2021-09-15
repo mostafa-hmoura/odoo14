@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+  <data>
+    <template id="my_custom_css_asset" name="my_custom_css assets" inherit_id="web.assets_backend">
+      <xpath expr="." position="inside">
+        <link rel="stylesheet" href="/public_market/static/src/css/some_css.css"/>
+      </xpath>
+    </template>
+  </data>
+
+    <!-- tree view -->
+
+    <record id="market_list" model="ir.ui.view">
+      <field name="name">market.form</field>
+      <field name="model">market</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" optional="show"/>
+          <field name="name2" optional="show"/>
+          <field name="partner_id" optional="show"/>
+          <field name="partner_id2" optional="show"/>
+          <field name="date_abjudication" optional="hide"/>
+          <field name="date_visa" optional="hide" />
+          <field name="chantier_id" optional="hide" />
+          <field name="zone_id" optional="hide" />
+          <field name="description" optional="hide"/>
+          <field name="situation_id" optional="hide" />
+          <field name="date_approbation_scheduled" optional="hide" />
+          <field name="date_start_scheduled" optional="hide" />
+          <field name="date_start" optional="show"/>
+          <field name="duree" optional="show"/>
+          <field name="date_stop_scheduled" optional="hide" />
+          <field name="date_stop" optional="hide" />
+          <field name="partner_bank_id" optional="hide" />
+          <field name="nantissement" optional="hide" />
+          <field name="total_amount" optional="hide"/>
+          <field name="montant_avance" optional="hide" />
+          <field name="total_apres_avenant" optional="hide" />
+          <field name="mandat_recu" optional="hide" />
+          <field name="depense_cum" optional="hide" />
+          <field name="remaining" optional="hide" />
+          <field name="caution_provisoire" optional="hide" />
+          <field name="retenue_garantie" optional="hide" />
+          <field name="employee_id" optional="hide" />
+          <field name="total_avenant" optional="hide" />
+          <field name="duree_arret" optional="hide" />
+          <field name="state" optional="hide" />
+        </tree>
+      </field>
+    </record>
+
+    <!-- Form -->
+
+    <record id="public_market_form" model="ir.ui.view">
+      <field name="name">market.form</field>
+      <field name="model">market</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <field name="name2" string="Appel d'offre n°"/>
+                <field name="partner_id"/>
+                <field name="passation_mode_id"/>
+                <field name="date_abjudication"/>
+                <field name="date_visa"/>
+              </group>
+              <group>
+                <field name="name" string="Marché n°"/>
+                <field name="partner_id2"/>
+                <field name="employee_id"/>
+                <field name="hors_taxe"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="chantier_id"/>
+              </group>
+              <group>
+                <field name="description"/>
+              </group>
+              <group>
+                <field name="zone_id"/>
+              </group>
+              <group>
+                <field name="situation_id"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="date_approbation_scheduled"/>
+                <field name="date_start_scheduled"/>
+                <field name="date_stop_scheduled"/>
+              </group>
+              <group>
+                <field name="date_approbation"/>
+                <field name="date_start"/>
+                <field name="date_stop"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="duree"/>
+                <field name="partner_bank_id"/>
+                <field name="nantissement"/>
+              </group>
+              <group></group>
+            </group>
+            <group>
+              <group>
+                <field name="total_amount"/>
+              </group>
+              <group>
+                <field name="total_apres_avenant"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="mandat_recu"/>
+              </group>
+              <group>
+                <field name="montant_avance"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="depense_cum"/>
+              </group>
+              <group>
+                <field name="remaining"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="caution_provisoire"/>
+              </group>
+              <group>
+                <field name="date_caution_provisoire"/>
+                <!--<field name="date_caution_definitive"/>
+                                            <field name="date_retenue_garantie"/>-->
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="caution_definitive"/>
+              </group>
+              <group>
+                <field name="retenue_garantie"/>
+              </group>
+            </group>
+            <group>
+              <group>
+                <field name="date_reception_provisoire"/>
+              </group>
+              <group>
+                <field name="date_reception_definitive"/>
+              </group>
+            </group>
+            <group string="Gestions des arrêts :">
+              <field name="stop_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="date_arret" optional="show"/>
+                  <field name="date_reprise" optional="show"/>
+                </tree>
+              </field>
+            </group>
+            <group>
+              <field name="duree_arret"/>
+            </group>
+            <group string="Gestions des avenants :">
+              <field name="avenant_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="num_avenant" class="wid" optional="show"/>
+                  <field name="date_av" optional="show"/>
+                  <field name="montant" optional="show"/>
+                </tree>
+              </field>
+            </group>
+            <group>
+              <field name="total_avenant"/>
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <!-- Action -->
+
+    <record id="action_public_market" model="ir.actions.act_window">
+      <field name="name">Public Market</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">market</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_neutral_face">Créez votre premier marché</p>
+      </field>
+    </record>
+
+    <!-- Top menu item -->
+
+  <menuitem id="public_market_root" name="Public Market" sequence="1"/>
+
+  <menuitem id="public_market" name="Marché" parent="public_market_root" action="action_public_market" sequence="1"/>
+
+
+</odoo>
