@@ -2,3 +2,11 @@
   width : 50px !important;
   color: green;
 }
+
+.btnColor {
+background-color : #5eba47;
+color : #edf4ea;
+margin : 5px;
+font-weight: bold;
+
+}

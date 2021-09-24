@@ -8,6 +8,7 @@ class PublicMarketAttachementTemplate(models.Model):
 
     code = fields.Many2one("market", u"Code", required=True)
     name = fields.Char(u"Description", required=True)
+
     line_ids = fields.One2many("public.market.attachement.template.line", "attachement_id")
 
 
@@ -22,7 +23,8 @@ class PublicMarketAttachemenTemplatetLine(models.Model):
     quantity = fields.Float(u"CPS", required=True)
     price_unit = fields.Float(u"P.U")
 
-    line_ids = fields.One2many("public.market.attachement.sous.template.line", "attachement_id")
+    sous_line_ids = fields.One2many("public.market.attachement.sous.template.line", "attachement_id",
+                                    domain="[('attachement_id', '=', 61)]" )
 
 
 class PublicMarketAttachementSousTemplate(models.Model):

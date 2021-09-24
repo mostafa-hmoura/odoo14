@@ -10,3 +10,4 @@ access_public_market_attachement,access.public.market.attachement,model_public_m
 access_public_market_attachement_line,access.public.market.attachement.line,model_public_market_attachement_line,,1,1,1,1
 access_public_market_situation,access.public.market.situation,model_public_market_situation,,1,1,1,1
 access_public_market_attachement_footer,access.public.market.attachement.footer,model_public_market_attachement_footer,,1,1,1,1
+access_public_market_attachement_label,access.public.market.attachement.label,model_public_market_attachement_label,,1,1,1,1

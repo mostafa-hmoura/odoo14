@@ -27,9 +27,9 @@
             <field name="model">public.market.attachement</field>
             <field name="arch" type="xml">
                 <form>
-                    <header>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
-                    </header>
+                        <header>
+                            <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                        </header>
                         <group>
                             <field name="public_market_id"/>
                         </group>
@@ -50,9 +50,15 @@
                             <group>
                                 <field name="start"/>
                                 <field name="template_attachement_id" attrs="{'invisible':[('start','=',False)],'required':[('start','!=',False)]}"/>
-                                <!--<field name="attachement_id" attrs="{'invisible':[('start','!=',False)]}"/>-->
+                                <field name="attachement_id" attrs="{'invisible':[('start','!=',False)]}"/>
                             </group>
                         </group>
+                        <center>
+                            <button name="action_compute_line" string="Remplir" type="object" states="draft" class="btnColor" />
+                            <button name="action_compute_line_delete" string="Vider" type="object" states="draft" class="btnColor" />
+                            <button name="action_update_line" string="Corriger" type="object" class="btnColor"
+                                    />
+                        </center>
                         <group>
                             <field name="line_ids" nolabel="1">
                                 <tree editable="bottom">
@@ -72,7 +78,7 @@
                                 </tree>
                             </field>
                         </group>
-                        <group>
+                        <group string="Total">
                             <group>
                                 <field name="total_depense_cps" class="wid"/>
                                 <field name="total_depense_prec" class="wid"/>
@@ -83,14 +89,21 @@
                             </group>
                         </group>
                         <group string="Résumé des dépenses">
+                        </group>
+                        <center>
+                            <button name="action_compute_footer" string="Récupérer" type="object" states="draft"
+                                    class="btnColor"/>
+                            <button name="action_compute_footer_delete" string="Vider" type="object" states="draft"
+                                    class="btnColor"/>
+                        </center>
+                        <group>
                             <field name="footer_line_ids" nolabel="1">
                                 <tree editable="bottom" create="false" delete="false" edit="false">
-                                    <field name="label_id" optional="show"/>
+                                    <field name="nom"  optional="show"/>
                                     <field name="depense_cps" optional="show"/>
                                     <field name="depense_prec" optional="show"/>
                                     <field name="depense" optional="show"/>
                                     <field name="depense_cum" optional="show"/>
-                                    <field name="code" invisible="1" optional="show"/>
                                 </tree>
                             </field>
                         </group>

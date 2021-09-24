@@ -10,6 +10,7 @@
     'depends' : ['mail'],
     'data': [
         'security/ir.model.access.csv',
+        'data/default_value.xml',
         'views/public_market_views.xml',
         'views/template_attachement_views.xml',
         'views/attachement_views.xml',

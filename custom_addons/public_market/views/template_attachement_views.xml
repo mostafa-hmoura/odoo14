@@ -108,6 +108,9 @@
                             <group>
                                 <field name="name"/>
                             </group>
+                            <group>
+                                <field name="attachement_id"/>
+                            </group>
                         </group>
                         <group>
                             <group col="6" colspan="2">
@@ -119,7 +122,7 @@
                             </group>
                         </group>
                         <group string="Les Sous Lignes">
-                            <field name="line_ids" nolabel="1">
+                            <field name="sous_line_ids" nolabel="1">
                                 <tree  editable="bottom">
                                     <field name="price_number"/>
                                     <field name="price_code"/>
