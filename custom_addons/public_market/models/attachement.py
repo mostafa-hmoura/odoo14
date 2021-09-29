@@ -1,5 +1,8 @@
 from odoo import api, fields, models,_
 from decimal import *
+
+from odoo.exceptions import UserError
+from odoo.tools.convert import safe_eval
 from . import function as fun
 
 class PublicMarketAttachementLine(models.Model):
@@ -251,190 +254,71 @@ class PublicMarketAttachement(models.Model):
             line.depense_cum = ((line.depense_prec + line.depense))
 
     def action_compute_footer(self):
-        #self.action_compute_footer_delete()
+
         self.ensure_one()
         labels = self.env['public.market.attachement.label'].search([], order="seq asc")
 
-        tht_initialized_vars = {}
-        ttc_initialized_vars = {}
-        tva_initialized_vars = {}
-        rdp_initialized_vars = {}
-        trdp_initialized_vars = {}
-        rg7_initialized_vars = {}
-        rg10_initialized_vars = {}
-        mcrg_initialized_vars = {}
-        mrrg_initialized_vars = {}
-        tgttc_initialized_vars = {}
-        rl10_initialized_vars = {}
-        tgttar_initialized_vars = {}
-
-        tgttar_initialized_vars['nom'] = ''
-        tgttar_initialized_vars['depense_cps'] = 0
-        tgttar_initialized_vars['depense_prec'] = 0
-        tgttar_initialized_vars['depense'] = 0
-        tgttar_initialized_vars['depense_cum'] = 0
-
-        rl10_initialized_vars['nom'] = ''
-        rl10_initialized_vars['depense_cps'] = 0
-        rl10_initialized_vars['depense_prec'] = 0
-        rl10_initialized_vars['depense'] = 0
-        rl10_initialized_vars['depense_cum'] = 0
-
-        tgttc_initialized_vars['nom'] = ''
-        tgttc_initialized_vars['depense_cps'] = 0
-        tgttc_initialized_vars['depense_prec'] = 0
-        tgttc_initialized_vars['depense'] = 0
-        tgttc_initialized_vars['depense_cum'] = 0
-
-        mrrg_initialized_vars['nom'] = ''
-        mrrg_initialized_vars['depense_cps'] = 0
-        mrrg_initialized_vars['depense_prec'] = 0
-        mrrg_initialized_vars['depense'] = 0
-        mrrg_initialized_vars['depense_cum'] = 0
-
-        mcrg_initialized_vars['nom'] = ''
-        mcrg_initialized_vars['depense_cps'] = 0
-        mcrg_initialized_vars['depense_prec'] = 0
-        mcrg_initialized_vars['depense'] = 0
-        mcrg_initialized_vars['depense_cum'] = 0
-
-        rg10_initialized_vars['nom'] = ''
-        rg10_initialized_vars['depense_cps'] = 0
-        rg10_initialized_vars['depense_prec'] = 0
-        rg10_initialized_vars['depense'] = 0
-        rg10_initialized_vars['depense_cum'] = 0
-
-        rg7_initialized_vars['nom'] = ''
-        rg7_initialized_vars['depense_cps'] = 0
-        rg7_initialized_vars['depense_prec'] = 0
-        rg7_initialized_vars['depense'] = 0
-        rg7_initialized_vars['depense_cum'] = 0
-
-        ttc_initialized_vars['nom'] = ''
-        ttc_initialized_vars['depense_cps'] = 0
-        ttc_initialized_vars['depense_prec'] = 0
-        ttc_initialized_vars['depense'] = 0
-        ttc_initialized_vars['depense_cum'] = 0
-
-        tht_initialized_vars['nom'] = ''
-        tht_initialized_vars['depense_cps'] = 0
-        tht_initialized_vars['depense_prec'] = 0
-        tht_initialized_vars['depense'] = 0
-        tht_initialized_vars['depense_cum'] = 0
-
-        tva_initialized_vars['nom'] = ''
-        tva_initialized_vars['depense_cps'] = 0
-        tva_initialized_vars['depense_prec'] = 0
-        tva_initialized_vars['depense'] = 0
-        tva_initialized_vars['depense_cum'] = 0
-
-        rdp_initialized_vars['nom'] = ''
-        rdp_initialized_vars['depense_cps'] = 0
-        rdp_initialized_vars['depense_prec'] = 0
-        rdp_initialized_vars['depense'] = 0
-        rdp_initialized_vars['depense_cum'] = 0
-
-        trdp_initialized_vars['nom'] = ''
-        trdp_initialized_vars['depense_cps'] = 0
-        trdp_initialized_vars['depense_prec'] = 0
-        trdp_initialized_vars['depense'] = 0
-        trdp_initialized_vars['depense_cum'] = 0
+        data = {}
 
         for label in labels:
 
-            if label.type in ['func']:
+            if label.code == 'THT' and label.seq == 1:
+                data = fun.calcul_tht(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.val == 'calcul_tht':
-                    ret = fun.calcul_tht(self)
-                    tht_initialized_vars['nom'] = label.name
-                    tht_initialized_vars['depense_cps'] = ret['depense_cps']
-                    tht_initialized_vars['depense_prec'] = ret['depense_prec']
-                    tht_initialized_vars['depense'] = ret['depense']
-                    tht_initialized_vars['depense_cum'] = ret['depense_cum']
-                    tht_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'TVA' and label.seq == 2:
+                data = fun.calcul_tva(self,data,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.val == 'calcul_ttc':
-                    ret = fun.calcul_ttc(self,tht_initialized_vars,tva_initialized_vars)
-                    ttc_initialized_vars['nom'] = label.name
-                    ttc_initialized_vars['depense_cps'] = ret['depense_cps']
-                    ttc_initialized_vars['depense_prec'] = ret['depense_prec']
-                    ttc_initialized_vars['depense'] = ret['depense']
-                    ttc_initialized_vars['depense_cum'] = ret['depense_cum']
-                    ttc_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'TTC' and label.seq == 3:
+                data = fun.calcul_ttc(self,data,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'RL10':
-                    rl10_initialized_vars['nom'] = label.name
-                    rl10_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'RDP' and label.seq == 4:
+                self.env['public.market.attachement.footer'].create(fun.calcul_rdp(self,label.name))
 
-            elif label.type in ['formule']:
+            elif label.code == 'TRDP' and label.seq == 5:
+                data = fun.calcul_trdp(self,data,fun.calcul_rdp(self,label.name),label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'TVA':
-                    tva_initialized_vars['nom'] = label.name
-                    tva_initialized_vars['depense_cps'] = self.total_depense_cps * 0.2
-                    tva_initialized_vars['depense_prec'] = self.total_depense_prec * 0.2
-                    tva_initialized_vars['depense'] = self.total_depense * 0.2
-                    tva_initialized_vars['depense_cum'] = self.total_depense_cum * 0.2
-                    tva_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'RG7' and label.seq == 6:
+                data = fun.calcul_rg7(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'RDP':
-                    rdp_initialized_vars['nom'] = label.name
-                    rdp_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'RG10' and label.seq == 7:
+                data = fun.calcul_rg10(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'TRDP':
-                    trdp_initialized_vars['nom'] = label.name
-                    trdp_initialized_vars['depense_cps'] = rdp_initialized_vars['depense_cps'] + ttc_initialized_vars['depense_cps']
-                    trdp_initialized_vars['depense_prec'] = rdp_initialized_vars['depense_prec'] + ttc_initialized_vars['depense_prec']
-                    trdp_initialized_vars['depense'] = rdp_initialized_vars['depense'] + ttc_initialized_vars['depense']
-                    trdp_initialized_vars['depense_cum'] = rdp_initialized_vars['depense_cum'] + ttc_initialized_vars['depense_cum']
-                    trdp_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'MCRG' and label.seq == 8:
+                data = fun.calcul_mcrg(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'RG7':
-                    rg7_initialized_vars['nom'] = label.name
-                    rg7_initialized_vars['depense_cps'] = ttc_initialized_vars['depense_cps'] * 0.07
-                    rg7_initialized_vars['depense_prec'] = ttc_initialized_vars['depense_prec'] * 0.07
-                    rg7_initialized_vars['depense'] = ttc_initialized_vars['depense'] * 0.07
-                    rg7_initialized_vars['depense_cum'] = ttc_initialized_vars['depense_cum'] * 0.07
-                    rg7_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'MRRG' and label.seq == 9:
+                data = fun.calcul_mrrg(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'RG10':
-                    rg10_initialized_vars['nom'] = label.name
-                    rg10_initialized_vars['depense_cps'] = ttc_initialized_vars['depense_cps'] * 0.10
-                    rg10_initialized_vars['depense_prec'] = ttc_initialized_vars['depense_prec'] * 0.10
-                    rg10_initialized_vars['depense'] = ttc_initialized_vars['depense'] * 0.10
-                    rg10_initialized_vars['depense_cum'] = ttc_initialized_vars['depense_cum'] * 0.10
-                    rg10_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'TGTTC' and label.seq == 10:
+                data = fun.calcul_tgttc(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'MCRG':
-                    mcrg_initialized_vars['nom'] = label.name
-                    mcrg_initialized_vars['attachement_id'] = self.id
+            elif label.code == 'RL10' and label.seq == 11:
+                data = fun.calcul_rl10(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
-                if label.code == 'MRRG':
-                    mrrg_initialized_vars['nom'] = label.name
-                    mrrg_initialized_vars['attachement_id'] = self.id
-
-                if label.code == 'TGTTC':
-                    tgttc_initialized_vars['nom'] = label.name
-                    tgttc_initialized_vars['attachement_id'] = self.id
-
-                if label.code == 'TGTTAR':
-                    tgttar_initialized_vars['nom'] = label.name
-                    tgttar_initialized_vars['attachement_id'] = self.id
-
-        if ttc_initialized_vars and tva_initialized_vars and tht_initialized_vars :
-            print('nadi canadi',self.id)
-
-            self.env['public.market.attachement.footer'].create(tht_initialized_vars)
-            self.env['public.market.attachement.footer'].create(tva_initialized_vars)
-            self.env['public.market.attachement.footer'].create(ttc_initialized_vars)
-            self.env['public.market.attachement.footer'].create(rdp_initialized_vars)
-            self.env['public.market.attachement.footer'].create(trdp_initialized_vars)
-            self.env['public.market.attachement.footer'].create(rg7_initialized_vars)
-            self.env['public.market.attachement.footer'].create(rg10_initialized_vars)
-            self.env['public.market.attachement.footer'].create(mcrg_initialized_vars)
-            self.env['public.market.attachement.footer'].create(mrrg_initialized_vars)
-            self.env['public.market.attachement.footer'].create(tgttc_initialized_vars)
-            self.env['public.market.attachement.footer'].create(rl10_initialized_vars)
-            self.env['public.market.attachement.footer'].create(tgttar_initialized_vars)
+            elif label.code == 'TGTTAR' and label.seq == 12:
+                data = fun.calcul_tgttar(self,label.name)
+                if data:
+                    self.env['public.market.attachement.footer'].create(data)
 
     def action_compute_footer_delete(self):
         self.ensure_one()
@@ -460,13 +344,7 @@ class PublicMarketAttachemenLabel(models.Model):
 
     name = fields.Char(u'name')
 
-    type = fields.Selection([
-        ('fix', 'Fixe'),
-        ('func', 'Fonction'),
-        ('formule', 'Formule'),
-    ])
     seq = fields.Integer(u'Sequence')
-    val = fields.Char(u'Valeur')
 
     _sql_constraints = [('code_uniq', 'unique (code)', u'Code unique !')]
 ### Function

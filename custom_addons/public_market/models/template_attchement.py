@@ -23,8 +23,7 @@ class PublicMarketAttachemenTemplatetLine(models.Model):
     quantity = fields.Float(u"CPS", required=True)
     price_unit = fields.Float(u"P.U")
 
-    sous_line_ids = fields.One2many("public.market.attachement.sous.template.line", "attachement_id",
-                                    domain="[('attachement_id', '=', 61)]" )
+    sous_line_ids = fields.One2many("public.market.attachement.sous.template.line", "attachement_id" )
 
 
 class PublicMarketAttachementSousTemplate(models.Model):

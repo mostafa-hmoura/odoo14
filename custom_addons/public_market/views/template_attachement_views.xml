@@ -121,7 +121,7 @@
                                 <field name="price_unit"/>
                             </group>
                         </group>
-                        <group string="Les Sous Lignes">
+                        <group string="les sous lignes">
                             <field name="sous_line_ids" nolabel="1">
                                 <tree  editable="bottom">
                                     <field name="price_number"/>
